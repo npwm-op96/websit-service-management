@@ -1,45 +1,43 @@
 <template>
   <v-app>
-    <v-app-bar v-if="login" app>
-
-      <v-app-bar-nav-icon v-if="login" @click="drawer_sidebar = !drawer_sidebar"></v-app-bar-nav-icon>
+    <v-app-bar v-if="signed" app>
+      <v-app-bar-nav-icon
+        v-if="signed"
+        @click="drawer_sidebar = !drawer_sidebar"
+      ></v-app-bar-nav-icon>
       <v-toolbar-title>NPWM.OP APP </v-toolbar-title>
       <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
       <!-- <v-container class="py-0 fill-height"> -->
 
-        <v-btn
-          v-for="link in links"
-          :key="link"
-          text
-        >
-          {{ link }}
-        </v-btn>
-        <v-btn to="/Login">Login</v-btn>
+      <v-btn v-for="link in links" :key="link" text>
+        {{ link }}
+      </v-btn>
+      <v-btn v-if="!signed" to="/Login">SigniIn</v-btn>
+      <v-btn v-if="signed" @click="signout">SignOut</v-btn>
 
-        <!-- <v-spacer></v-spacer> -->
+      <!-- <v-spacer></v-spacer> -->
 
-        <!-- <v-responsive max-width="260">
+      <!-- <v-responsive max-width="260">
 
         </v-responsive> -->
       <!-- </v-container> -->
     </v-app-bar>
 
     <v-navigation-drawer
-    v-if="login"
-    fixed
+      v-if="signed"
+      fixed
       width="300"
       v-model="drawer_sidebar"
       app
     >
-    <Sidebar/>
-      
+      <Sidebar />
     </v-navigation-drawer>
 
     <v-main class="grey lighten-2">
       <v-container>
-              <router-view>dfdf</router-view>
+        <router-view>dfdf</router-view>
 
         <!-- <v-row>
           <template v-for="n in 4">
@@ -67,20 +65,28 @@
 </template>
 
 <script>
-import Sidebar from './components/Sidebar.vue'
-  export default {
-    components:{
-      Sidebar
+import Sidebar from "./components/Sidebar.vue";
+export default {
+  components: {
+    Sidebar,
+  },
+  data: () => ({
+    login: false,
+    drawer_sidebar: null,
+    links: ["Portfoilo", "Contract", "Profile", "Updates"],
+  }),
+  computed: {
+    signed() {
+      return this.$store.state.auth.status.signed;
+      // console.log(this.$store.state.auth.status.signed);
     },
-    data: () => ({ 
-      login:false,
-      drawer_sidebar: null,
-      links: [
-        'Portfoilo',
-        'Contract',
-        'Profile',
-        'Updates',
-      ],
-       }),
+  },
+  methods:{
+    signout(){
+        this.$store.dispatch('auth/signout')
+    }
+    
+
   }
+};
 </script>

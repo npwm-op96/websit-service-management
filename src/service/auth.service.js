@@ -2,7 +2,8 @@ import axios from 'axios'
 const url_api = "http://localhost:8080/api/auth/";
 
 class Auth {
-    signin = (member)=>{
+
+    signin = async (member)=>{
         return axios.post(url_api+"signin",{
             username:member.username,
             password:member.password

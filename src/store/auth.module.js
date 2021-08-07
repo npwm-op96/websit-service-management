@@ -10,6 +10,7 @@ const initialState = member
         namespaced:true,
         state:initialState,
         actions:{
+
             signin({commit},member){
                 return Authservice .signin(member).then(
                 member=>{

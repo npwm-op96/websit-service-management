@@ -9,29 +9,27 @@
         label="Username"
         required
       ></v-text-field>
-        <v-text-field
-            v-model="password"
-            :append-icon="password_show ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="password_show ? 'text' : 'password'"
-            :rules="[passwordRules]"
-            name="input-10-1"
-            label="password"
-            hint="At least 8 characters"
-            @click:append="password_show = !password_show"
-
-            counter
-          ></v-text-field>
-            <v-text-field
-            v-model="cf_password"
-            :append-icon="cfpassword_show ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="cfpassword_show ? 'text' : 'password'"
-            :rules="[CfpasswordRules,passwordConfirmationRule]"
-            name="input-10-1"
-            label="confirm password"
-            counter
-            @click:append="cfpassword_show = !cfpassword_show"
-
-          ></v-text-field>
+      <v-text-field
+        v-model="password"
+        :append-icon="password_show ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="password_show ? 'text' : 'password'"
+        :rules="[passwordRules]"
+        name="input-10-1"
+        label="password"
+        hint="At least 8 characters"
+        @click:append="password_show = !password_show"
+        counter
+      ></v-text-field>
+      <v-text-field
+        v-model="cf_password"
+        :append-icon="cfpassword_show ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="cfpassword_show ? 'text' : 'password'"
+        :rules="[CfpasswordRules, passwordConfirmationRule]"
+        name="input-10-1"
+        label="confirm password"
+        counter
+        @click:append="cfpassword_show = !cfpassword_show"
+      ></v-text-field>
       <v-checkbox
         v-model="checkbox"
         :rules="[(v) => !!v || 'You must agree to continue!']"
@@ -39,9 +37,7 @@
         required
       ></v-checkbox>
 
-      <v-btn  color="success" class="mr-4" @click="register">
-        Register
-      </v-btn>
+      <v-btn color="success" class="mr-4" @click="register"> Register </v-btn>
 
       <v-btn color="error" class="mr-4" @click="reset"> Reset Form </v-btn>
 
@@ -59,9 +55,9 @@ export default {
     password_show: false,
     cfpassword_show: true,
     name: "",
-    password:'',
-    cf_password:'',
-    matchpassword:'',
+    password: "",
+    cf_password: "",
+    matchpassword: "",
     nameRules: [
       (v) => !!v || "Name is required",
       (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
@@ -72,25 +68,37 @@ export default {
     //   (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     // ],
     passwordRules: [(v) => !!v || "Password is required"],
-    CfpasswordRules:[
-        (v) => !!v || "Password is required",
-        // (v)=> (v== "jaker1234")  || "Password Mismatch"
+    CfpasswordRules: [
+      (v) => !!v || "Password is required",
+      // (v)=> (v== "jaker1234")  || "Password Mismatch"
     ],
     select: null,
     items: ["Item 1", "Item 2", "Item 3", "Item 4"],
     checkbox: false,
   }),
-computed: {
+  computed: {
     passwordConfirmationRule() {
-        return () => (this.cf_password === this.password) || 'Password must match'
+      return () => this.cf_password === this.password || "Password must match";
     },
-},
+    signed() {
+      return this.$store.state.auth.status.signed;
+    },
+    signedmember() {
+      return this.$store.state.auth.member;
+    },
+  },
+  mounted() {
+    if (!this.signedmember) {
+      this.$router.push("/login");
+    }
+  },
+  created() {
+    if (this.signed) {
+      this.$router.push("profile");
+    }
+  },
   methods: {
-    register(){
-        // if (this.passwordConfirmationRule) {
-        // //     console.log('register success')
-            
-        // }
+    register() {
     },
     validate() {
       this.$refs.form.validate();
@@ -101,7 +109,6 @@ computed: {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-
   },
 };
 </script>

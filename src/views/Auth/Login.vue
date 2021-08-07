@@ -21,10 +21,13 @@
 
           <v-row class="d-flex">
             <v-col cols="3">
-              <v-btn @click="handlesignin" color="primary" fas>Login</v-btn>
+              <v-btn @click="handlesignin" color="primary" fas>Signin</v-btn>
             </v-col>
             <v-col cols="3">
-              <v-btn to="Register"  color="success" fas>Register</v-btn>
+              <v-btn to="Register"  color="success" fas>Signup</v-btn>
+            </v-col>
+            <v-col cols="3">
+              <v-btn to="Register"  color="success" fas>Sing out</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -51,7 +54,7 @@ export default {
   },
   created() {
     if (this.signed) {
-      this.$router.push("/profile");
+      this.$router.push("profile");
     }
   },
   methods: {
